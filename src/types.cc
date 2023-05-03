@@ -17,7 +17,7 @@
 #include <rime/switcher.h>
 #include "lua_gears.h"
 #include <rime/service.h>
-#include <boost/regex.hpp>
+#include <regex>
 
 #include "lib/lua_export_type.h"
 #include "lib/luatype_boost_optional.h"
@@ -25,7 +25,7 @@
 #define ENABLE_TYPES_EXT
 
 using namespace rime;
-using boost::optional;
+using std::optional;
 
 namespace {
 
@@ -295,7 +295,7 @@ namespace ReverseDbReg {
 namespace SegmentationReg {
   typedef Segmentation T;
 
-  optional<Segment &> back(T &t) {
+  optional<std::reference_wrapper<Segment>> back(T &t) {
     if (t.empty())
       return {};
     return t.back();
@@ -323,7 +323,7 @@ namespace SegmentationReg {
     return ret;
   }
 
-  optional<Segment &> get_at(T &t, const int idx) {
+  optional<std::reference_wrapper<Segment>> get_at(T &t, const int idx) {
     size_t size = t.size();
     int index = (idx < 0) ? size + idx : idx;
     if (index >=0 && index < size)
@@ -536,7 +536,7 @@ namespace CommitHistoryReg {
     return 0;
   }
 
-  optional<CR &> back(T &t) {
+  optional<std::reference_wrapper<CR>> back(T &t) {
     if (t.empty())
       return {};
     return t.back();
@@ -717,7 +717,7 @@ namespace CompositionReg {
     return dynamic_cast<Segmentation *>(&t);
   }
 
-  optional<Segment &> back(T &t) {
+  optional<std::reference_wrapper<Segment>> back(T &t) {
     if (t.empty())
       return {};
     return t.back();
@@ -1218,12 +1218,12 @@ static int raw_connect(lua_State *L) {
        }
      });
 
-  LuaType<boost::signals2::connection>::pushdata(L, c);
+  LuaType<sigslot::connection>::pushdata(L, c);
   return 1;
 }
 
 namespace ConnectionReg {
-  typedef boost::signals2::connection T;
+  typedef sigslot::connection T;
 
   static const luaL_Reg funcs[] = {
     { NULL, NULL },
@@ -1737,10 +1737,10 @@ namespace RimeApiReg {
   optional<std::vector<string>> regex_search(
       const string &target ,const string &pattern )
   {
-    boost::regex reg(pattern);
-    boost::smatch sm;
+    std::regex reg(pattern);
+    std::smatch sm;
     std::vector<string> res;
-    if ( boost::regex_search(target,sm,reg)) {
+    if ( std::regex_search(target,sm,reg)) {
       for (auto str : sm)
         res.push_back(str);
       return res;
@@ -1750,14 +1750,14 @@ namespace RimeApiReg {
 
   bool regex_match(const string &target, const string &pattern)
   {
-    boost::regex reg(pattern);
-    return boost::regex_match(target, reg);
+    std::regex reg(pattern);
+    return std::regex_match(target, reg);
   }
 
   string regex_replace(const string &target, const string &pattern, const string &fmt)
   {
-    boost::regex reg(pattern);
-    return boost::regex_replace(target, reg, fmt);
+    std::regex reg(pattern);
+    return std::regex_replace(target, reg, fmt);
   }
 
   static const luaL_Reg funcs[]= {

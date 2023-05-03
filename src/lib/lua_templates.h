@@ -642,6 +642,30 @@ struct MemberWrapper<R (C::*)(T...) const, f> {
   }
 };
 
+template<typename R, typename C, typename... T, R (C::*f)(T...) noexcept>
+struct MemberWrapper<R (C::*)(T...) noexcept, f> {
+  template<typename D>
+  static R wrapT(D &c, T... t) {
+    return (c.*f)(t...);
+  }
+
+  static R wrap(C &c, T... t) {
+    return wrapT<C>(c, t...);
+  }
+};
+
+template<typename R, typename C, typename... T, R (C::*f)(T...) const noexcept>
+struct MemberWrapper<R (C::*)(T...) const noexcept, f> {
+  template<typename D>
+  static R wrapT(const D &c, T... t) {
+    return (c.*f)(t...);
+  }
+
+  static R wrap(const C &c, T... t) {
+    return wrapT<C>(c, t...);
+  }
+};
+
 template<typename F, F f>
 struct LUAWRAPPER_LOCAL MemberWrapperV;
 

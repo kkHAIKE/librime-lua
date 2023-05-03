@@ -41,6 +41,7 @@ add_library(rime-lua-objs OBJECT ${RIME_LUA_SRC} ${RIME_LUA_LIB_SRC} ${LUA_SRC})
 if(BUILD_SHARED_LIBS)
   set_target_properties(rime-lua-objs PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif()
+target_link_libraries(rime-lua-objs Pal::Sigslot glog::glog libopencc_header marisa_header)
 
 set(plugin_name "rime-lua" PARENT_SCOPE)
 set(plugin_objs $<TARGET_OBJECTS:rime-lua-objs> PARENT_SCOPE)

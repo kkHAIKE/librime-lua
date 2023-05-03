@@ -1,19 +1,19 @@
-// Copyright RIME Developers 
+// Copyright RIME Developers
 // Distributed under the BSD License
 // from: <librime/src/rime/gear/simplifier.cc>
 // 2011-12-12 GONG Chen <chen.sst@gmail.com>
-// 
+//
 
 
-#include <opencc/Exception.hpp>
-#include <opencc/Config.hpp> // Place OpenCC #includes here to avoid VS2015 compilation errors
-#include <opencc/Converter.hpp>
-#include <opencc/Conversion.hpp>
-#include <opencc/ConversionChain.hpp>
-#include <opencc/Dict.hpp>
-#include <opencc/DictEntry.hpp>
-#include <opencc/Common.hpp>
-#include <boost/filesystem.hpp>
+#include <Exception.hpp>
+#include <Config.hpp> // Place OpenCC #includes here to avoid VS2015 compilation errors
+#include <Converter.hpp>
+#include <Conversion.hpp>
+#include <ConversionChain.hpp>
+#include <Dict.hpp>
+#include <DictEntry.hpp>
+#include <Common.hpp>
+#include <filesystem>
 #include <rime/common.h>
 #include <rime_api.h>
 
@@ -21,7 +21,7 @@
 #include "lib/luatype_boost_optional.h"
 
 using namespace std;
-using boost::optional;
+using std::optional;
 
 namespace {
 
@@ -130,7 +130,7 @@ vector<string> Opencc::convert_word(const string& text){
 
 namespace OpenccReg {
   typedef Opencc T;
-  namespace ns = boost::filesystem;
+  namespace ns = std::filesystem;
 
   optional<T> make(const string &filename) {
     string user_path( RimeGetUserDataDir());
